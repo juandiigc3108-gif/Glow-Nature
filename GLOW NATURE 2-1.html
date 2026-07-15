@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glow Nature - Tienda Oficial</title>
+    <meta name="description" content="Glow Nature - Cosmética natural y cuidado de la piel.">
+    <!-- Importación de tipografía llamativa y moderna para el logo corporativo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,900&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+    
+        /* --- ESTILOS BASE --- */
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Plus Jakarta Sans', Helvetica, Arial, sans-serif;
+            margin: 0; padding: 0;
+            background-color: #ffffff; color: #333926;
+            display: flex; flex-direction: column; min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        /* --- MODO OSCURO --- */
+        .dark-mode { 
+            background-color: #1a1a1a !important; 
+            color: #dcd6be !important; 
+        }
+        .dark-mode .header { 
+            background-color: #24291b !important; 
+            border-bottom: 1px solid #333926; 
+        }
+        .dark-mode .nav-list a { 
+            color: #dcd6be; 
+        }
+        .dark-mode .hero { 
+            background-color: #24291b; 
+        }
+        .dark-mode .product-card { 
+            border: 1px solid #333926; 
+            background-color: #24291b;
+        }
+        .dark-mode .product-card:hover {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        .dark-mode .product-img-box { 
+            background: #2e3325; 
+            border-bottom: 1px solid #333926; 
+        }
+        .dark-mode .product-name {
+            color: #dcd6be;
+        }
+        .dark-mode .product-desc {
+            color: #b0aa95;
+        }
+        .dark-mode .size-select {
+            background-color: #1a1a1a;
+            color: #dcd6be;
+            border: 1px solid #333926;
+        }
+        .dark-mode .btn-reviews {
+            color: #b0aa95;
+            border: 1px solid #333926;
+        }
+        .dark-mode .btn-reviews:hover {
+            background: #2e3325;
+            color: #dcd6be;
+        }
+        .dark-mode .cart-drawer { 
+            background: #1a1a1a; 
+            color: #dcd6be; 
+        }
+        .dark-mode .modal-header, 
+        .dark-mode .cart-header, 
+        .dark-mode .cart-footer,
+        .dark-mode .review-modal,
+        .dark-mode .receipt-modal-content { 
+            background: #24291b !important; 
+            color: #dcd6be;
+        }
+        .dark-mode .modal-body {
+            background: #1a1a1a;
+        }
+        .dark-mode .review-item {
+            border-bottom: 1px solid #333926;
+        }
+        .dark-mode .review-text {
+            color: #dcd6be;
+        }
+        .dark-mode .form-select,
+        .dark-mode .form-input {
+            background: #1a1a1a;
+            color: #dcd6be;
+            border: 1px solid #333926;
+        }
+        .dark-mode .close-modal,
+        .dark-mode .close-cart {
+            color: #dcd6be;
+        }
+
+        /* --- NAVEGACIÓN PRINCIPAL --- */
+        .header {
+            background-color: #ffffff; padding: 15px 0;
+            border-bottom: 1px solid #f2edd9;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 0 40px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        
+        /* DISEÑO DE LOGO BRANDING Y NOMBRE COMERCIAL LLAMATIVO */
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-box svg { width: 45px; height: 45px; cursor: pointer; }
+        .brand-name {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 26px;
+            font-weight: 900;
+            font-style: italic;
+            color: #24291b;
+            letter-spacing: -0.5px;
+            transition: color 0.3s;
+        }
+        .dark-mode .brand-name {
+            color: #dcd6be;
+            text-shadow: 0 0 10px rgba(220, 214, 190, 0.2);
+        }
+        
+        .nav-list { list-style: none; margin: 0; padding: 0; display: flex; gap: 30px; flex-wrap: wrap;}
+        .nav-list a {
+            text-decoration: none; color: #333926; font-weight: 600;
+            font-size: 14px; text-transform: uppercase; cursor: pointer;
+            transition: color 0.3s;
+        }
+        .nav-list a:hover { color: #7c8963; }
+        
+        /* Icono Carrito con Badge y Buscador */
+        .nav-icons { display: flex; gap: 20px; align-items: center; }
+        #searchInput { 
+            padding: 8px 12px; 
+            border-radius: 20px; 
+            border: 1px solid #dcd6be; 
+            outline: none;
+            font-size: 14px;
+        }
+        .cart-btn-container { position: relative; cursor: pointer; }
+        .cart-badge {
+            position: absolute; top: -5px; right: -10px;
+            background-color: #d4af37; color: white;
+            border-radius: 50%; padding: 2px 6px; font-size: 12px; font-weight: bold;
+        }
+        .icon-btn { background: none; border: none; cursor: pointer; color: #333926; transition: color 0.3s;}
+        .icon-btn:hover { color: #7c8963; }
+
+        /* --- BOTÓN IR ARRIBA Y FAVORITOS --- */
+        #topBtn { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            padding: 15px; 
+            background: #7c8963; 
+            color: white; 
+            border: none; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            display: none; 
+            z-index: 999; 
+            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .fav-btn { 
+            cursor: pointer; 
+            font-size: 20px; 
+            border: none; 
+            background: none; 
+            margin-top: 10px; 
+            align-self: center;
+            transition: transform 0.2s;
+        }
+        .fav-btn:hover {
+            transform: scale(1.2);
+        }
+
+        /* --- HERO (INICIO) --- */
+        .hero { 
+            background-color: #f9f8f3; padding: 80px 20px; 
+            text-align: center; border-bottom: 1px solid #f2edd9;
+        }
+        .hero h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 46px; margin-bottom: 15px; color: #24291b;}
+        .hero p { font-size: 16px; color: #606853; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+
+        /* --- PRODUCTOS Y FILTROS --- */
+        .products-section { max-width: 1200px; margin: 60px auto; padding: 0 40px; width: 100%; box-sizing: border-box;}
+        
+        /* Sub-menú de Categorías */
+        .category-tabs {
+            display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap;
+        }
+        .cat-btn {
+            background: #ffffff; border: 1px solid #dcd6be; padding: 10px 20px;
+            border-radius: 20px; cursor: pointer; font-size: 14px; color: #606853;
+            transition: all 0.3s; text-transform: uppercase; font-weight: 600;
+        }
+        .cat-btn.active, .cat-btn:hover {
+            background: #7c8963; color: #ffffff; border-color: #7c8963;
+        }
+
+        .products-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px;
+        }
+        .product-card {
+            border: 1px solid #f2edd9; border-radius: 8px; overflow: hidden;
+            display: flex; flex-direction: column; transition: transform 0.2s, background-color 0.3s;
+            background-color: white;
+        }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(124,137,99,0.08); }
+        .product-img-box { background: #faf9f5; text-align: center; padding: 20px; border-bottom: 1px solid #f2edd9;}
+        .product-img { max-width: 100%; height: 220px; width: 100%; object-fit: cover; border-radius: 4px; }
+        .product-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-name { font-family: 'Playfair Display', Georgia, serif; font-size: 20px; margin: 0 0 10px 0; color: #24291b; font-weight: 700;}
+        .product-desc { font-size: 13px; color: #606853; flex-grow: 1; margin-bottom: 15px; line-height: 1.5;}
+        .size-select { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #dcd6be; border-radius: 4px; outline: none;}
+        
+        .btn { padding: 12px; font-weight: bold; text-transform: uppercase; border: none; cursor: pointer; border-radius: 4px; width: 100%; font-size: 13px; transition: background-color 0.3s;}
+        .btn-primary { background: #7c8963; color: white; }
+        .btn-primary:hover { background: #606853; }
+        
+        .btn-reviews { background: transparent; color: #606853; border: 1px solid #dcd6be; margin-top: 10px;}
+        .btn-reviews:hover { background: #faf9f5; color: #333926;}
+
+        /* --- MODAL DE RESEÑAS POR PRODUCTO --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 3000;
+            display: none; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .review-modal {
+            background: white; width: 90%; max-width: 500px; border-radius: 8px;
+            overflow: hidden; display: flex; flex-direction: column; max-height: 90vh;
+        }
+        .modal-header {
+            padding: 20px; background: #faf9f5; border-bottom: 1px solid #f2edd9; display: flex; justify-content: space-between; align-items: center;
+        }
+        .modal-header h3 { margin: 0; font-family: Georgia, serif; font-size: 18px; }
+        .close-modal { background: none; border: none; font-size: 24px; cursor: pointer; color: #333926; }
+        
+        .modal-body { padding: 20px; overflow-y: auto; flex-grow: 1; }
+        .reviews-list { margin-bottom: 20px; }
+        .review-item { border-bottom: 1px solid #f2edd9; padding: 15px 0; }
+        .review-item:last-child { border-bottom: none; }
+        .review-stars { color: #d4af37; font-size: 14px; display: block; margin-bottom: 5px; }
+        .review-text { margin: 0; font-size: 14px; color: #4a503d; font-style: italic; }
+        .no-reviews { color: #888; font-size: 14px; font-style: italic; text-align: center; padding: 20px 0;}
+
+        .modal-footer {
+            padding: 20px; background: #faf9f5; border-top: 1px solid #f2edd9;
+        }
+        .review-form { display: flex; flex-direction: column; gap: 10px; }
+        .form-select, .form-input { padding: 10px; border: 1px solid #dcd6be; border-radius: 4px; font-size: 14px; width: 100%; box-sizing: border-box;}
+
+        /* --- CARRITO LATERAL (DRAWER) --- */
+        .cart-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 2000;
+            display: none; opacity: 0; transition: opacity 0.3s;
+        }
+        .cart-overlay.active { display: block; opacity: 1; }
+        .cart-drawer {
+            position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px;
+            height: 100vh; background: white; z-index: 2001;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transition: right 0.3s ease-in-out;
+            display: flex; flex-direction: column;
+        }
+        .cart-drawer.open { right: 0; }
+        .cart-header { padding: 20px; background: #faf9f5; border-bottom: 1px solid #f2edd9; display: flex; justify-content: space-between; align-items: center;}
+        .cart-header h2 { margin: 0; font-family: Georgia, serif; font-size: 20px;}
+        .close-cart { background: none; border: none; font-size: 24px; cursor: pointer; color: #333926;}
+        .cart-items { flex-grow: 1; overflow-y: auto; padding: 20px; }
+        .cart-item { display: flex; justify-content: space-between; border-bottom: 1px solid #f2edd9; padding: 15px 0; align-items: center;}
+        .item-details h4 { margin: 0 0 5px 0; font-size: 14px; }
+        .item-details p { margin: 0; font-size: 12px; color: #606853; }
+        .remove-btn { color: #d9534f; background: none; border: none; font-size: 12px; cursor: pointer; margin-top: 5px; text-decoration: underline;}
+        .cart-footer { padding: 20px; border-top: 1px solid #f2edd9; background: #faf9f5;}
+        .cart-total { display: flex; justify-content: space-between; font-weight: bold; font-size: 18px; margin-bottom: 15px;}
+        
+        .footer { background: #24291b; color: #dcd6be; text-align: center; padding: 30px; margin-top: auto; font-size: 13px;}
+        
+        /* --- ESTILOS COMPROBANTE Y NUEVAS SECCIONES DE PAGO --- */
+        .receipt-modal-content { background: white; padding: 25px 20px; border-radius: 0px; width: 90%; max-width: 440px; text-align: left; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .dark-mode .receipt-modal-content .method-option,
+        .dark-mode .receipt-modal-content .input-field { background: #1a1a1a; color: #dcd6be; border-color: #333926; }
+        .method-option { display: flex; align-items: center; padding: 12px; border: 1px solid #dcd6be; border-radius: 4px; margin-bottom: 10px; cursor: pointer; }
+        .method-option input { margin-right: 12px; accent-color: #7c8963; }
+        .input-group { margin-bottom: 12px; }
+        .input-group label { display: block; font-size: 12px; margin-bottom: 4px; font-weight: bold; }
+        .input-field { width: 100%; padding: 10px; border: 1px solid #dcd6be; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
+        .barcode-box { background: #faf9f5; padding: 15px; border: 1px dashed #7c8963; border-radius: 4px; text-align: center; margin: 15px 0; }
+        .dark-mode .barcode-box { background: #2e3325; border-color: #dcd6be; }
+        .barcode-lines { background: #333926; height: 40px; width: 80%; margin: 0 auto 8px auto; display: flex; justify-content: space-around; padding: 0 3px; }
+        .dark-mode .barcode-lines { background: #dcd6be; }
+        .barcode-lines div { background: #fff; }
+        .dark-mode .barcode-lines div { background: #1a1a1a; }
+        .alert-box { font-size: 11px; color: #664d03; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 8px; border-radius: 4px; margin-bottom: 15px; text-align: center; }
+        .receipt-table { width: 100%; font-size: 13px; line-height: 1.8; border-collapse: collapse; margin-top: 10px; }
+        .receipt-table td:last-child { text-align: right; }
+        .flex-space { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+      #promoPopup{
+    position:fixed;
+    bottom:90px;
+    right:20px;
+
+    background:#7c8963;
+    color:white;
+
+    padding:18px;
+    width:220px;
+
+    border-radius:15px;
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
+
+    z-index:9999;
+
+    animation: aparecer .6s;
+}
+
+#promoPopup button{
+    width:100%;
+    border:none;
+    background:white;
+    color:#7c8963;
+    padding:10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+@keyframes aparecer{
+    from{
+        transform:translateY(40px);
+        opacity:0;
+    }
+
+    to{
+        transform:translateY(0);
+        opacity:1;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <!-- CABECERA PRINCIPAL -->
+    <header class="header">
+        <div class="container">
+            <a href="#inicio" class="brand-box" aria-label="Glow Nature Inicio">
+                <div class="logo-box">
+                   <img src= "https://cdn3.f-cdn.com/contestentries/2340934/66621335/65642e6b1ef30_thumb900.jpg"alt="Logo Glow Nature" style="width: 80px; height: 80px; object-fit: contain;">
+                    </svg>
+                </div>
+                <!-- Incorporación del nombre de la empresa con tipografía de alto impacto -->
+                <span class="brand-name">Glow Nature</span>
+            </a>
+            
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#nosotros">Nosotros</a></li>
+                    <li><a href="#productos">Productos</a></li>
+                </ul>
+            </nav>
+
+            <!-- BUSCADOR E ICONOS -->
+            <input type="text" id="searchInput" placeholder="Buscar productos...">
+
+            <div class="nav-icons">
+                <button id="darkModeToggle" class="icon-btn" aria-label="Cambiar modo de color">🌙</button>
+                <div class="cart-btn-container" onclick="toggleCart()">
+                    <button class="icon-btn" aria-label="Ver carrito">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    </button>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECCIÓN INICIO -->
+    <section class="hero" id="inicio">
+        <h1>Belleza Consciente e Inteligente</h1>
+        <p>Cosmética botánica formulada con extractos puros de la naturaleza. Cuidamos tu piel mientras respetamos el equilibrio del planeta.</p>
+    </section>
+
+    <!-- NOSOTROS -->
+<section id="nosotros" style="padding:70px 40px; background:#f9f8f3; text-align:center;">
+    <h2 style="font-family:'Playfair Display',serif; font-size:36px;">
+        Sobre Glow Nature
+    </h2>
+
+    <p style="max-width:900px; margin:auto; line-height:1.8;">
+        En Glow Nature creemos que la belleza nace del cuidado natural.
+        Elaboramos productos para el cuidado de la piel utilizando ingredientes
+        botánicos de alta calidad que ayudan a mantener una piel sana,
+        hidratada y protegida.
+    </p>
+
+    <div style="display:flex; gap:40px; justify-content:center; flex-wrap:wrap; margin-top:50px;">
+
+        <div style="max-width:420px;">
+            <h3>🌿 Misión</h3>
+            <p>
+                Ofrecer productos cosméticos naturales que mejoren el bienestar
+                de nuestros clientes mediante ingredientes seguros,
+                efectivos y respetuosos con el medio ambiente.
+            </p>
+        </div>
+
+        <div style="max-width:420px;">
+            <h3>✨ Visión</h3>
+            <p>
+                Ser una marca líder en cosmética natural reconocida por su
+                innovación, calidad y compromiso con el cuidado de la piel
+                y la sostenibilidad.
+            </p>
+        </div>
+
+    </div>
+</section>
+    <!-- SECCIÓN PRODUCTOS -->
+    <main class="products-section" id="productos">
+        
+        <!-- SUB-MENÚ DE CATEGORÍAS -->
+        <div class="category-tabs">
+            <button onclick="changeCategory('todos')" class="cat-btn active" data-cat="todos">Todos los Productos</button>
+            <button onclick="changeCategory('cremas')" class="cat-btn" data-cat="cremas">Cremas</button>
+            <button onclick="changeCategory('sueros')" class="cat-btn" data-cat="sueros">Sueros</button>
+            <button onclick="changeCategory('tonicos')" class="cat-btn" data-cat="tonicos">Tónicos</button>
+        </div>
+
+        <div class="products-grid" id="productsGrid">
+            <!-- Los productos se inyectan aquí vía JavaScript -->
+        </div>
+    </main>
+
+    <!-- MODAL DE RESEÑAS POR PRODUCTO -->
+    <div class="modal-overlay" id="reviewModalOverlay" onclick="closeReviews(event)">
+        <div class="review-modal" id="reviewModal">
+            <div class="modal-header">
+                <h3 id="modalProductName">Reseñas del Producto</h3>
+                <button class="close-modal" onclick="closeReviews(event, true)">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="reviews-list" id="modalReviewList">
+                    <!-- Las reseñas del producto se cargan aquí -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px;">Añadir tu reseña</h4>
+                <div class="review-form">
+                    <select class="form-select" id="productReviewStars">
+                        <option value="5">5 Estrellas ★★★★★</option>
+                        <option value="4">4 Estrellas ★★★★☆</option>
+                        <option value="3">3 Estrellas ★★★☆☆</option>
+                        <option value="2">2 Estrellas ★★☆☆•</option>
+                        <option value="1">1 Estrella ★☆☆☆☆</option>
+                    </select>
+                    <input type="text" class="form-input" id="productReviewInput" placeholder="Escribe tu opinión..." maxlength="150">
+                    <button class="btn btn-primary" onclick="submitProductReview()">Enviar Reseña</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL MULTI-PASOS DE PAGO Y COMPROBANTE COMPLETO -->
+    <div class="modal-overlay" id="receiptModal">
+        <div class="receipt-modal-content" id="modalCheckoutContent">
+            
+            <!-- CONTENEDOR 1: PANTALLA DE SELECCIÓN Y FORMULARIOS DE PAGO -->
+            <div id="checkoutFormStep">
+                <h3 style="margin-top: 0; font-family: Georgia, serif; text-align: center;">Finalizar Orden</h3>
+                
+                <!-- SELECCIÓN DE FORMA DE PAGO -->
+                <div style="margin-bottom: 20px;">
+                    <label class="method-option">
+                        <input type="radio" name="payment_method_choice" value="card" checked onchange="switchPaymentMethodView('card')">
+                        <div>
+                            <strong style="font-size: 13px; display: block;">Tarjeta de Crédito / Débito</strong>
+                            <span style="font-size: 11px; opacity: 0.8;">Visa, Mastercard, American Express</span>
+                        </div>
+                    </label>
+                    <label class="method-option">
+                        <input type="radio" name="payment_method_choice" value="cash" onchange="switchPaymentMethodView('cash')">
+                        <div>
+                            <strong style="font-size: 13px; display: block;">Pago en Efectivo (Conveniencia)</strong>
+                            <span style="font-size: 11px; opacity: 0.8;">OXXO, 7-Eleven y corresponsales</span>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- FORMULARIO DE TARJETA -->
+                <div id="checkoutCardForm">
+                    <div class="input-group">
+                        <label>Número de Tarjeta</label>
+                        <input type="text" class="input-field" placeholder="0000 0000 0000 0000" maxlength="19" id="cardNumInput">
+                    </div>
+                    <div class="input-group">
+                        <label>Nombre del Titular</label>
+                        <input type="text" class="input-field" placeholder="Ej. Juan Pérez" id="cardNameInput">
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="input-group" style="flex: 1;">
+                            <label>Expiración</label>
+                            <input type="text" class="input-field" placeholder="MM/AA" maxlength="5" id="cardExpInput">
+                        </div>
+                        <div class="input-group" style="flex: 1;">
+                            <label>CVV</label>
+                            <input type="password" class="input-field" placeholder="123" maxlength="4" id="cardCvvInput">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 10px;" onclick="executeFinalCheckout('Tarjeta')">PAGAR AHORA</button>
+                </div>
+
+                <!-- CÓDIGO DE TIENDA DE CONVENIENCIA -->
+                <div id="checkoutCashForm" style="display: none;">
+                    <p style="font-size: 12px; opacity: 0.8; margin-top: 0;">Se generará una referencia digital de barras para liquidar el importe directamente en cajas registradoras autorizadas.</p>
+                    <div class="barcode-box">
+                        <span style="font-size: 11px; display: block; margin-bottom: 3px; opacity: 0.8;">Referencia de Pago:</span>
+                        <strong style="font-size: 16px; letter-spacing: 1px; display: block; margin-bottom: 10px;" id="dynamicBarcodeRef">9876-5432-1098-7654</strong>
+                        <div class="barcode-lines">
+                            <div style="width:2px;"></div><div style="width:4px;"></div><div style="width:1px;"></div>
+                            <div style="width:3px;"></div><div style="width:5px;"></div><div style="width:2px;"></div>
+                            <div style="width:4px;"></div><div style="width:1px;"></div>
+                        </div>
+                    </div>
+                    <div class="alert-box">
+                        ⏰ Plazo límite de vigencia: 48 horas a partir de su generación.
+                    </div>
+                    <button class="btn btn-primary" onclick="executeFinalCheckout('Efectivo en Tienda')">GENERAR ORDEN DE PAGO</button>
+                </div>
+                
+                <button class="btn btn-reviews" style="margin-top: 10px; width: 100%;" onclick="closeCheckoutModal()">Cancelar</button>
+            </div>
+
+            <!-- CONTENEDOR 2: COMPROBANTE FINAL COMPLETO ESTILO SHEIN/TEMU -->
+            <div id="checkoutReceiptStep" style="display: none;">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <div style="width: 40px; height: 40px; background: #e8f5e9; color: #2e7d32; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px auto; font-size: 18px; font-weight: bold;">✓</div>
+                    <h3 style="margin: 0; font-family: Georgia, serif; font-size: 18px; letter-spacing: 0.5px;">¡COMPRA CONFIRMADA!</h3>
+                    <p style="margin: 3px 0 0 0; font-size: 12px; opacity: 0.7;">Tu orden ha sido registrada correctamente.</p>
+                </div>
+
+                <hr style="border: none; border-top: 1px dashed #dcd6be; margin: 15px 0;">
+
+                <table class="receipt-table">
+                    <tr>
+                        <td style="opacity: 0.7;">Folio de Pedido:</td>
+                        <td id="finalReceiptFolio" style="font-weight: bold;"></td>
+                    </tr>
+                    <tr>
+                        <td style="opacity: 0.7;">Fecha de Emisión:</td>
+                        <td id="finalReceiptDate"></td>
+                    </tr>
+                    <tr>
+                        <td style="opacity: 0.7;">Método de Pago:</td>
+                        <td id="finalReceiptMethod"></td>
+                    </tr>
+                </table>
+
+                <hr style="border: none; border-top: 1px solid #f2edd9; margin: 12px 0;">
+
+                <h4 style="margin: 0 0 8px 0; font-size: 12px; text-transform: uppercase; opacity: 0.9;">Artículos Adquiridos</h4>
+                <div id="finalReceiptItemsContainer" style="max-height: 100px; overflow-y: auto; margin-bottom: 10px;">
+                    <!-- Se listan dinámicamente los artículos comprados -->
+                </div>
+
+                <hr style="border: none; border-top: 1px dashed #dcd6be; margin: 12px 0;">
+
+                <div class="flex-space">
+                    <span style="opacity: 0.8;">Subtotal de Orden</span>
+                    <span id="finalReceiptSubtotal"></span>
+                </div>
+                <div class="flex-space">
+                    <span style="opacity: 0.8;">Envío prioritario</span>
+                    <span style="color: #2e7d32; font-weight: bold;">GRATIS</span>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid #333926; margin: 12px 0;">
+
+                <div class="flex-space" style="font-size: 15px; font-weight: bold;">
+                    <span>Total Liquidado:</span>
+                    <span id="finalReceiptTotal"></span>
+                </div>
+
+                <div style="margin-top: 20px; display: flex; gap: 8px;">
+                    <button class="btn btn-reviews" style="flex: 1; margin: 0; padding: 10px;" onclick="window.print()">Imprimir</button>
+                    <button class="btn btn-primary" style="flex: 1; padding: 10px;" onclick="closeCheckoutModal(true)">Aceptar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CARRITO MODAL (LATERAL) -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h2>Tu Carrito</h2>
+            <button class="close-cart" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Los artículos del carrito se inyectan aquí -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotalText">$0.00 MXN</span>
+            </div>
+            <button class="btn btn-primary" onclick="checkout()">Proceder al Pago</button>
+        </div>
+    </div>
+
+    <!-- BOTÓN VOLVER ARRIBA -->
+    <button id="topBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})" aria-label="Volver arriba">↑</button>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="footer">
+        <!-- PIE DE PÁGINA -->
+    <footer class="footer" style="padding: 40px 20px; border-top: 1px solid rgba(220, 214, 190, 0.15);">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
+            
+            <!-- Redes Sociales Minimalistas (SVG) -->
+            <div style="display: flex; gap: 28px; align-items: center;">
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/glow_nature20?igsh=bmVlZTRjcTg5N2Uw&utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram" style="color: #dcd6be; transition: color 0.3s, transform 0.2s; display: inline-flex;" onmouseover="this.style.color='#7c8963'; this.style.transform='scale(1.1)'" onmouseout="this.style.color='#dcd6be'; this.style.transform='scale(1)'">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                                <!-- WhatsApp -->
+                <a href="https://wa.me/qr/NUMEREHBVDSZG1" target="_blank" rel="noopener" aria-label="WhatsApp" style="color: #dcd6be; transition: color 0.3s, transform 0.2s; display: inline-flex;" onmouseover="this.style.color='#7c8963'; this.style.transform='scale(1.1)'" onmouseout="this.style.color='#dcd6be'; this.style.transform='scale(1)'">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                </a>
+            </div>
+
+            <!-- Línea separadora sutil -->
+            <div style="width: 40px; height: 1px; background-color: rgba(220, 214, 190, 0.3);"></div>
+
+            <!-- Texto inferior con tracking (espaciado de letras) premium -->
+            <p style="margin: 0; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.6; font-weight: 400;">
+                &copy; 2026 Glow Nature. Cuidado Consciente.
+            </p>
+        </div>
+    </footer>
+
+    <!-- LÓGICA DE LA APLICACIÓN -->
+    <script>
+        // 1. BASE DE DATOS DE PRODUCTOS CON IMÁGENES DE ALTA CALIDAD Y CORRECCIÓN DE MANZANILLA
+        const dbProducts = [
+            // --- CREMAS (3) ---
+            { id: 1, name: "Crema Nutritiva de Noche", category: "cremas", desc: "Repara profundamente el tejido cutáneo con manteca de karité.", img: "https://th.bing.com/th/id/OIP.h9IKJbqDWO5yMf-HRKD8MgHaGF?w=258&h=212&c=7&r=0&o=7&pid=1.7&rm=3", options: [ { size: "50 ml", price: 580 } ] },
+            { id: 2, name: "Crema Hidratante de Día", category: "cremas", desc: "Ligera, con protección solar y extracto de té verde.", img: "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&q=80&w=600", options: [ { size: "50 ml", price: 450 }, { size: "100 ml", price: 700 } ] },
+            { id: 3, name: "Crema Matificante Antiacné", category: "cremas", desc: "Control natural de sebo con aceite de árbol de té y ácido salicílico.", img: "https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&q=80&w=600", options: [ { size: "50 ml", price: 420 } ] },
+            // --- SUEROS (3) ---
+            { id: 4, name: "Suero Facial Regenerador", category: "sueros", desc: "Ácido hialurónico vegano. Restaura la elasticidad y rellena líneas finas.", img: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=600", options: [ { size: "30 ml", price: 450 }, { size: "60 ml", price: 720 } ] },
+            { id: 5, name: "Suero de Vitamina C", category: "sueros", desc: "Ilumina el rostro, unifica el tono y combate radicales libres.", img: "https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&q=80&w=600", options: [ { size: "30 ml", price: 520 } ] },
+            { id: 6, name: "Suero de Niacinamida 10%", category: "sueros", desc: "Ayuda a reducir la apariencia de los poros y controla manchas oscuras.", img: "https://oechsle.vteximg.com.br/arquivos/ids/24622097-1000-1000/Image-1.jpg?v=639086831114570000", options: [ { size: "30 ml", price: 490 } ] },
+            // --- TÓNICOS (3) ---
+            { id: 7, name: "Tónico Herbal Purificante", category: "tonicos", desc: "Destilado de rosas y hamamelis. Balancea el pH después de la limpieza.", img: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&q=80&w=600", options: [ { size: "100 ml", price: 320 }, { size: "200 ml", price: 510 } ] },
+            { id: 8, name: "Tónico Exfoliante AHA/BHA", category: "tonicos", desc: "Exfoliación química suave que remueve células muertas sin irritar.", img: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=600", options: [ { size: "100 ml", price: 380 } ] },
+            // CORREGIDO: Imagen botánica real de Manzanilla (Flores medicinales)
+            { id: 9, name: "Tónico de Manzanilla", category: "tonicos", desc: "Ideal para preparar la piel antes del maquillaje, refresca y calma.", img: "https://th.bing.com/th/id/R.933035d8fe64bfffe9f7c7611e332143?rik=Gb1JUitkhUKt4g&riu=http%3a%2f%2fcdn2.cocinadelirante.com%2fsites%2fdefault%2ffiles%2fstyles%2fgallerie%2fpublic%2ftonico-de-manzanilla-solstizia-_.jpg&ehk=IhmHVzrB2cfmGsxdTxl5AQf2DmxQZiMDBDOAnt4EMiE%3d&risl=&pid=ImgRaw&r=0", options: [ { size: "200 ml", price: 290 } ] }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('glow_cart')) || [];
+        
+        // Inicializar Reseñas por defecto en localStorage si no existen
+        let productReviews = JSON.parse(localStorage.getItem('glow_product_reviews')) || {
+            1: [{ stars: 5, text: "Me deja la piel súper suave al despertar." }],
+            5: [{ stars: 4, text: "Huele delicioso y da mucha luz a la cara." }]
+        };
+
+        let currentReviewProductId = null; 
+        let currentCategory = 'todos'; // Guarda la categoría seleccionada actualmente
+
+        // Formateador de moneda MXN
+        const money = (val) => new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(val);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartUI();
+            
+            // Cargar tema guardado
+            if(localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        });
+
+        // ESCUCHADOR DEL BUSCADOR EN TIEMPO REAL
+        document.getElementById("searchInput").addEventListener("input", () => {
+            renderProducts();
+        });
+
+        // CAMBIAR PESTAÑA DE CATEGORÍA
+        function changeCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.getAttribute('data-cat') === category) btn.classList.add('active');
+            });
+            renderProducts();
+        }
+
+        // MODO OSCURO
+        document.getElementById('darkModeToggle').onclick = () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        };
+
+        // VISIBILIDAD DEL BOTÓN VOLVER ARRIBA
+        window.onscroll = () => {
+            document.getElementById('topBtn').style.display = window.scrollY > 300 ? 'block' : 'none';
+        };
+
+        // 2. RENDERIZADO Y FILTRADO COMBINADO DE PRODUCTOS
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = ""; 
+
+            const query = document.getElementById("searchInput").value.toLowerCase().trim();
+
+            // Filtrado inteligente por Categoría Y por término de Búsqueda
+            const filtered = dbProducts.filter(p => {
+                const matchCategory = (currentCategory === 'todos' || p.category === currentCategory);
+                const matchQuery = (p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query));
+                return matchCategory && matchQuery;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; font-style: italic; color: #606853;">No se encontraron productos que coincidan con tu búsqueda.</p>`;
+                return;
+            }
+
+            filtered.forEach(prod => {
+                let optionsHtml = prod.options.map((opt, index) => 
+                    `<option value="${index}">${opt.size} - ${money(opt.price)}</option>`
+                ).join('');
+
+                const cardHtml = `
+                    <article class="product-card">
+                        <div class="product-img-box">
+                            <img class="product-img" src="${prod.img}" alt="${prod.name}">
+                        </div>
+                        <div class="product-info">
+                            <h2 class="product-name">${prod.name}</h2>
+                            <p class="product-desc">${prod.desc}</p>
+                            <select class="size-select" id="select-${prod.id}">
+                                ${optionsHtml}
+                            </select>
+                            <button class="btn btn-primary" onclick="addToCart(${prod.id})">Añadir al Carrito</button>
+                            <button class="btn btn-reviews" onclick="openReviews(${prod.id}, '${prod.name}')">Ver Reseñas</button>
+                            <button class="fav-btn" onclick="this.innerText=(this.innerText=='♡'?'❤️':'♡')">♡</button>
+                        </div>
+                    </article>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+        }
+
+        // 3. LÓGICA DE RESEÑAS POR PRODUCTO
+        function openReviews(productId, productName) {
+            currentReviewProductId = productId;
+            document.getElementById('modalProductName').innerText = "Reseñas: " + productName;
+            renderReviewsList();
+            document.getElementById('reviewModalOverlay').classList.add('active');
+        }
+
+        function closeReviews(event, forceClose = false) {
+            if (forceClose || event.target.id === 'reviewModalOverlay') {
+                document.getElementById('reviewModalOverlay').classList.remove('active');
+            }
+        }
+
+        function renderReviewsList() {
+            const list = document.getElementById("modalReviewList");
+            list.innerHTML = ""; 
+            
+            const reviewsForThisProduct = productReviews[currentReviewProductId] || [];
+
+            if (reviewsForThisProduct.length === 0) {
+                list.innerHTML = "<p class='no-reviews'>Aún no hay reseñas para este producto. ¡Sé el primero en opinar!</p>";
+                return;
+            }
+
+            reviewsForThisProduct.forEach(review => {
+                const newItem = document.createElement("div");
+                newItem.className = "review-item";
+                newItem.innerHTML = `
+                    <span class="review-stars">${" ★ ".repeat(review.stars)}</span>
+                    <p class="review-text">"${review.text}"</p>
+                `;
+                list.appendChild(newItem);
+            });
+            list.scrollTop = list.scrollHeight;
+        }
+
+        function submitProductReview() {
+            const inputText = document.getElementById("productReviewInput");
+            if (!inputText.value.trim()) return alert("Por favor, escribe un comentario.");
+            
+            if (!productReviews[currentReviewProductId]) {
+                productReviews[currentReviewProductId] = [];
+            }
+
+            productReviews[currentReviewProductId].push({
+                stars: parseInt(document.getElementById("productReviewStars").value),
+                text: inputText.value.trim()
+            });
+
+            localStorage.setItem('glow_product_reviews', JSON.stringify(productReviews));
+            
+            inputText.value = "";
+            renderReviewsList();
+        }
+
+        // 4. LÓGICA DEL CARRITO
+        function addToCart(productId) {
+            const product = dbProducts.find(p => p.id === productId);
+            const selectElement = document.getElementById(`select-${productId}`);
+            const selectedOption = product.options[selectElement.value];
+            const existingItemIndex = cart.findIndex(item => item.id === productId && item.size === selectedOption.size);
+
+            if (existingItemIndex > -1) {
+                cart[existingItemIndex].quantity += 1;
+            } else {
+                cart.push({ id: product.id, name: product.name, size: selectedOption.size, price: selectedOption.price, quantity: 1 });
+            }
+
+            localStorage.setItem('glow_cart', JSON.stringify(cart));
+            updateCartUI();
+            
+            if (!document.getElementById('cartDrawer').classList.contains('open')) {
+                toggleCart();
+            }
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('glow_cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cartCount').innerText = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const container = document.getElementById('cartItems');
+            container.innerHTML = "";
+            let totalPrice = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = "<p>Tu carrito está vacío.</p>";
+            } else {
+                cart.forEach((item, index) => {
+                    totalPrice += (item.price * item.quantity);
+                    container.innerHTML += `
+                        <div class="cart-item">
+                            <div class="item-details">
+                                <h4>${item.name}</h4>
+                                <p>Talla: ${item.size} | Cant: ${item.quantity}</p>
+                                <p>${money(item.price * item.quantity)}</p>
+                                <button class="remove-btn" onclick="removeFromCart(${index})">Eliminar</button>
+                            </div>
+                        </div>`;
+                });
+            }
+            document.getElementById('cartTotalText').innerText = money(totalPrice);
+        }
+
+        function toggleCart() {
+            document.getElementById('cartDrawer').classList.toggle('open');
+            document.getElementById('cartOverlay').classList.toggle('active');
+        }
+
+        // --- INTERFAZ COMPLEMENTARIA DE PAGO E INTERCAMBIO (SHEIN/TEMU STYLE) ---
+        function checkout() {
+            if (cart.length === 0) return alert("Añade productos antes de pagar.");
+            
+            // Generar un código de barras aleatorio para conveniencia por si se selecciona
+            document.getElementById('dynamicBarcodeRef').innerText = 
+                Math.floor(Math.random() * 9000 + 1000) + "-" + 
+                Math.floor(Math.random() * 9000 + 1000) + "-" + 
+                Math.floor(Math.random() * 9000 + 1000) + "-" + 
+                Math.floor(Math.random() * 9000 + 1000);
+
+            // Limpiar inputs previos de tarjeta
+            document.getElementById('cardNumInput').value = "";
+            document.getElementById('cardNameInput').value = "";
+            document.getElementById('cardExpInput').value = "";
+            document.getElementById('cardCvvInput').value = "";
+            
+            // Regresar la modal a su paso de captura de formulario
+            document.getElementById('checkoutFormStep').style.display = "block";
+            document.getElementById('checkoutReceiptStep').style.display = "none";
+            
+            toggleCart();
+            document.getElementById('receiptModal').classList.add('active');
+        }
+
+        function switchPaymentMethodView(method) {
+            const cardForm = document.getElementById('checkoutCardForm');
+            const cashForm = document.getElementById('checkoutCashForm');
+            if (method === 'card') {
+                cardForm.style.display = 'block';
+                cashForm.style.display = 'none';
+            } else {
+                cardForm.style.display = 'none';
+                cashForm.style.display = 'block';
+            }
+        }
+
+        function closeCheckoutModal(shouldClearCart = false) {
+            document.getElementById('receiptModal').classList.remove('active');
+            if(shouldClearCart) {
+                cart = [];
+                localStorage.setItem('glow_cart', JSON.stringify(cart));
+                updateCartUI();
+            }
+        }
+
+        function executeFinalCheckout(paymentMethodLabel) {
+            // Si elige tarjeta, validación simulada muy básica
+            if (paymentMethodLabel === 'Tarjeta') {
+                const cNum = document.getElementById('cardNumInput').value.trim();
+                const cName = document.getElementById('cardNameInput').value.trim();
+                if (!cNum || !cName) {
+                    return alert("Por favor, introduce los datos obligatorios de tu tarjeta.");
+                }
+            }
+
+            // Cálculo total y lista de productos para el comprobante
+            let subtotal = 0;
+            let itemsHtml = "";
+            cart.forEach(item => {
+                subtotal += (item.price * item.quantity);
+                itemsHtml += `
+                    <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; opacity:0.8;">
+                        <span>• ${item.name} (${item.size}) x${item.quantity}</span>
+                        <span>${money(item.price * item.quantity)}</span>
+                    </div>`;
+            });
+
+            const folio = "GLOW-" + Math.floor(Math.random() * 900000 + 100000);
+            
+            // Inyectar datos en la pantalla de comprobante final estilo Shein/Temu
+            document.getElementById('finalReceiptFolio').innerText = folio;
+            document.getElementById('finalReceiptDate').innerText = new Date().toLocaleDateString('es-MX');
+            document.getElementById('finalReceiptMethod').innerText = paymentMethodLabel;
+            document.getElementById('finalReceiptItemsContainer').innerHTML = itemsHtml;
+            document.getElementById('finalReceiptSubtotal').innerText = money(subtotal);
+            document.getElementById('finalReceiptTotal').innerText = money(subtotal);
+
+            // Transición interna de vistas sin cerrar el contenedor modal
+            document.getElementById('checkoutFormStep').style.display = "none";
+            document.getElementById('checkoutReceiptStep').style.display = "block";
+        }
+    </script>
+      <div id="promoPopup">
+    🎉 <strong>15% de descuento</strong><br>
+    En tu primera compra.
+
+    <br><br>
+
+    <button onclick="cerrarPromo()">
+        Obtener descuento
+    </button>
+</div>
+</body>
+</html>
